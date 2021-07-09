@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetingManagementSystem", "MeetingManagementSystem\MeetingManagementSystem.csproj", "{6E389530-4D33-4671-894C-6A039E1FE7D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeetingManagementSystem", "MeetingManagementSystem\MeetingManagementSystem.csproj", "{6E389530-4D33-4671-894C-6A039E1FE7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{E540F190-6110-4631-BC61-4881C8CB56F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{E540F190-6110-4631-BC61-4881C8CB56F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataService", "DataService\DataService.csproj", "{38E6F0F7-D7BF-4BC9-AF80-D290273AC344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataService", "DataService\DataService.csproj", "{38E6F0F7-D7BF-4BC9-AF80-D290273AC344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FCF5D14-803F-408F-8383-753CA1D56AA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FCF5D14-803F-408F-8383-753CA1D56AA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{CD738F76-D900-45D4-AA79-637550FE5BB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6FCF5D14-803F-408F-8383-753CA1D56AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FCF5D14-803F-408F-8383-753CA1D56AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FCF5D14-803F-408F-8383-753CA1D56AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
