@@ -18,6 +18,7 @@ namespace MeetingManagementSystem
         {
             var host = CreateHostBuilder(args).Build();
 
+            //the following code seeds the database when the program first runs
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;

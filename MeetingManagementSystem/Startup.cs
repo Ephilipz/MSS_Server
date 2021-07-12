@@ -50,17 +50,20 @@ namespace MeetingManagementSystem
 
             ConfigureDI(services);
 
+            //Adds all controllers files and sets all JSON object being received and sent to user Pascal case
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver { NamingStrategy = new DefaultNamingStrategy() };
             });
 
+            //Adds swagger which is used to easily test APIs within the website
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MeetingManagementSystem", Version = "v1" });
             });
 
+            //Adds user identity with some password options
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
@@ -72,6 +75,7 @@ namespace MeetingManagementSystem
             })
               .AddEntityFrameworkStores<ApplicationContext>();
 
+            //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
             services.AddDbContext<ApplicationContext>(
             dbContextOptions => dbContextOptions
                 .UseMySql(Configuration.GetConnectionString("DefaultConnection"),
@@ -93,6 +97,7 @@ namespace MeetingManagementSystem
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //if the environment is on develop, it adds swagger to test the APIs in the browser
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -104,6 +109,7 @@ namespace MeetingManagementSystem
 
             app.UseRouting();
 
+            //used for login / registration
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

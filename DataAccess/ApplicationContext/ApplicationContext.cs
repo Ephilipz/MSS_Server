@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entities.Logging;
+using Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,17 @@ namespace DataAccess
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options) { }
 
+        //This function is used to map the classes to mySQL tables
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<LogItem>().ToTable("Logging");
             base.OnModelCreating(builder);
         }
 
+
+        //each entity class must be mapped to a DbSet below in order to be added to the database
         public DbSet<LogItem> Logging { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
     }
 }
