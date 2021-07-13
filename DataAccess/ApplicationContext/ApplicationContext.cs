@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities;
 using Entities.Logging;
 using Entities.Users;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<LogItem>().ToTable("Logging");
+            builder.Entity<Room>().ToTable("Room");
             base.OnModelCreating(builder);
         }
 
@@ -26,6 +28,7 @@ namespace DataAccess
         //each entity class must be mapped to a DbSet below in order to be added to the database
         public DbSet<LogItem> Logging { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Room> Rooms { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
     }
 }

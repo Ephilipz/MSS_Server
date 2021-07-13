@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Complaint")]
     [ApiController]
     public class ComplaintController : ControllerBase
     {

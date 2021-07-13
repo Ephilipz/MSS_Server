@@ -18,6 +18,7 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataService;
 
 namespace MeetingManagementSystem
 {
@@ -92,6 +93,8 @@ namespace MeetingManagementSystem
         {
             services.AddScoped<ILoggingDataService, LoggingDataService>();
             services.AddScoped<ILoggingDataAccess, LoggingDataAccess>();
+            services.AddScoped<IRoomDataService, RoomDataService>();
+            services.AddScoped<IRoomDataAccess, RoomDataAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
