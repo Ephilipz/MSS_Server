@@ -10,5 +10,7 @@ namespace Entities.Users
     public class Administrator : IdentityUser
     {
         public int AdminId { get; set; }
+        public virtual string ClientAccount { get; set; }
+
     }
 }

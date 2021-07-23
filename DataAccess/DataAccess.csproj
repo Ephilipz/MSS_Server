@@ -16,7 +16,6 @@
   <ItemGroup>
     <Folder Include="Complaint\" />
     <Folder Include="Reservation\" />
-    <Folder Include="Profile\" />
   </ItemGroup>
 
 </Project>
