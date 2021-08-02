@@ -11,5 +11,6 @@ namespace Entities
     {
         public int Id { get; set; }
         public bool isInUse { get; set; }
+        public bool isSpecial { get; set; }
     }
 }

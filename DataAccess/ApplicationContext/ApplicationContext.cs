@@ -21,6 +21,7 @@ namespace DataAccess
         {
             builder.Entity<LogItem>().ToTable("Logging");
             builder.Entity<Room>().ToTable("Room");
+            builder.Entity<Reservation>().ToTable("Reservation");
             base.OnModelCreating(builder);
         }
 
@@ -30,5 +31,6 @@ namespace DataAccess
         public DbSet<Client> Clients { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Reservation> Reservations { get; set;}
     }
 }
