@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entities;
 using Entities.Users;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Reservation
 {
-    class ReservationDataAccess : IReservationDataAccess
+    public class ReservationDataAccess : IReservationDataAccess
     {
         private readonly ApplicationContext _context;
         public ReservationDataAccess(ApplicationContext context)
         {
             _context = context;
         }
-        public async Task<Reservation> DeleteReservation(int id)
+        public async Task<Entities.Reservation> DeleteReservation(int id)
         {
             //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(id);
+            Entities.Reservation reservation = await _context.Reservations.FindAsync(id);
 
             //if the room exists, delete it
             if (reservation != null)
@@ -33,59 +32,30 @@ namespace DataAccess.Reservation
             return reservation;
         }
 
-        public async Task<Client> GetClient(int reservationID, int clientID)
+        public async Task<Entities.Reservation> GetReservation(int id)
         {
-            //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(reservationID);
-
-            //if the client is the User, return it. If not, system will check the list of participants
-            if (reservation.User.Billing.Id == clientID)
-                return await reservation.User;
-            else 
-            {
-                for (IdentityUser user: reservation.Participants) 
-                {
-                    if (user.Billing.Id == clientID)
-                        return await reservation.User;
-                }
-            }
+            //get the reservation from database
+            Entities.Reservation reservation = await _context.Reservations.FindAsync(id);
+            return reservation;
         }
 
-        public async Task<List<Client>> GetClients(int reservationID)
+        public async Task<List<Entities.Reservation>> GetReservations()
         {
-            //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(reservationID);
-
-            return await reservation.Participants;
+            //get the all reservations from database
+            return await _context.Reservations.ToListAsync();
         }
 
-        public async Task<DateTime> GetEndDateTime(int idreservationID)
-        {
-            //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(reservationID);
-
-            return await reservation.EndDateTime;
-        }
-
-        public async Task<DateTime> GetStartDateTime(int reservationID)
-        {
-            //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(reservationID);
-
-            return await reservation.StartDateTime;
-        }
-
-        public async Task<Reservation> PostReservation(Reservation reservation)
+        public async Task<Entities.Reservation> PostReservation(Entities.Reservation reservation)
         {
             await _context.Reservations.AddAsync(reservation);
             return reservation;
         }
 
-        public async Task<Reservation> PutReservation(int id, List<Client> addClients, List<Client> removeClients, 
+        public async Task<Entities.Reservation> PutReservation(int id, List<Client> addClients, List<Client> removeClients, 
             DateTime StartDateTime, DateTime EndDateTime)
         {
             //get the reservation from the database
-            Reservation reservation = await _context.Reservations.FindAsync(id);
+            Entities.Reservation reservation = await _context.Reservations.FindAsync(id);
 
             //if addClients / removeClients is not null, the list of participants will be modify
             if (addClients != null) 
@@ -100,7 +70,7 @@ namespace DataAccess.Reservation
                         reservation.Participants.Remove(client);
                 }
             }
-
+            //modify start and end time of the reservation
             reservation.StartDateTime = StartDateTime;
             reservation.EndDateTime = EndDateTime;
 
