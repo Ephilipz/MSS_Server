@@ -116,6 +116,8 @@ namespace MeetingManagementSystem
 
             app.UseRouting();
 
+            app.UseCors(AllowCORS);
+
             //used for login / registration
             app.UseAuthorization();
 
