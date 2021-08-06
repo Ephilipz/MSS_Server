@@ -13,11 +13,11 @@ namespace MeetingManagementSystem.Controllers
 {
     [Route("api/Profile")]
     [ApiController]
-    public class ProfuleController : ControllerBase
+    public class ProfileController : ControllerBase
     {
         private IProfileDataService _IProfileDataService;
 
-        public ProfuleController(IProfileDataService iProfileDataService)
+        public ProfileController(IProfileDataService iProfileDataService)
         {
             _IProfileDataService = iProfileDataService;
         }
