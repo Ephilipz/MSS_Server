@@ -51,29 +51,8 @@ namespace DataAccess.Reservation
             return reservation;
         }
 
-        public async Task<Entities.Reservation> PutReservation(int id, List<Client> addClients, List<Client> removeClients, 
-            DateTime StartDateTime, DateTime EndDateTime)
+        public async Task<Entities.Reservation> PutReservation(Entities.Reservation reservation)
         {
-            //get the reservation from the database
-            Entities.Reservation reservation = await _context.Reservations.FindAsync(id);
-
-            //if addClients / removeClients is not null, the list of participants will be modify
-            if (addClients != null) 
-            {
-                foreach (Client client in addClients)
-                    reservation.Participants.Add(client);
-            }
-            if (removeClients != null) 
-            {
-                foreach (Client client in removeClients) {
-                    if (reservation.Participants.Contains(client))
-                        reservation.Participants.Remove(client);
-                }
-            }
-            //modify start and end time of the reservation
-            reservation.StartDateTime = StartDateTime;
-            reservation.EndDateTime = EndDateTime;
-
             _context.Update(reservation);
             await _context.SaveChangesAsync();
             return reservation;

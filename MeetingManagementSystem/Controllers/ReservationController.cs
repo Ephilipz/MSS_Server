@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
 {
-    [Route("api/Room")]
+    [Route("api/Reservation")]
     [ApiController]
     public class ReservationController : ControllerBase
     {
@@ -36,9 +36,9 @@ namespace MeetingManagementSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Reservation>> PutReservation(int id, List<Client> addClients, List<Client> removeClients, DateTime StartDateTime, DateTime EndDateTime)
+        public async Task<ActionResult<Reservation>> PutReservation(Reservation reservation)
         {
-            return await _IReservationDataService.PutReservation(id, addClients, removeClients, StartDateTime, EndDateTime);
+            return await _IReservationDataService.PutReservation(reservation);
         }
 
         [HttpPost]

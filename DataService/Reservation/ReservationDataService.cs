@@ -36,9 +36,9 @@ namespace DataService.Reservation
             return await _IReservationDataAccess.PostReservation(reservation);
         }
 
-        public async Task<Entities.Reservation> PutReservation(int id, List<Client> addClients, List<Client> removeClients, DateTime StartDateTime, DateTime EndDateTime)
+        public async Task<Entities.Reservation> PutReservation(Entities.Reservation reservation)
         {
-            return await _IReservationDataAccess.PutReservation(id, addClients, removeClients, StartDateTime, EndDateTime);
+            return await _IReservationDataAccess.PutReservation(reservation);
         }
     }
 }
