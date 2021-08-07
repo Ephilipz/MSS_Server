@@ -42,7 +42,8 @@ namespace MeetingManagementSystem.Controllers
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
                 Email = registerVM.Email,
-                AdminId = registerVM.AdminId
+                Id = registerVM.Id,
+                PhoneNumber = registerVM.PhoneNumber
             };
 
             //create a user using the built in usermanager class
@@ -71,10 +72,12 @@ namespace MeetingManagementSystem.Controllers
             }
 
             //initializes a new client object
-            var user = new IdentityUser
+            var user = new Client
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
-                Email = registerVM.Email
+                Email = registerVM.Email,
+                Id = registerVM.Id, 
+                PhoneNumber = registerVM.PhoneNumber
             };
 
             //create a user using the built in usermanager class
@@ -105,18 +108,25 @@ namespace MeetingManagementSystem.Controllers
             //get the user object using their email via the userManager class
             var user = await _userManager.FindByEmailAsync(loginVM.Email);
 
-            //if the user exists and the password matches, sign in the user
-            if (user != null &&
+            //if the user exists and the password matches, sign in the user and reset the fail counter
+            if (user != null && 
                 await _userManager.CheckPasswordAsync(user, loginVM.Password))
             {
                 await _signInManager.SignInAsync(user, false);
+                user.AccessFailedCount = 0;
+                await _userManager.UpdateAsync(user);
                 return Ok();
             }
 
             //otherwise, add an error to the response and return a Bad Request
+            //if the access fail counter exceeds 5 times, redirect to error 404 page
             else
             {
+                if (user.AccessFailedCount >5 )
+                    Response.Redirect("Error 404");
                 ModelState.AddModelError("", "Invalid UserName or Password");
+                user.AccessFailedCount++;
+                await _userManager.UpdateAsync(user);
                 return BadRequest(ModelState);
             }
         }

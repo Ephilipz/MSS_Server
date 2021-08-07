@@ -22,8 +22,8 @@ namespace DataAccess
             //get the room from the database
             Room room = await _context.Rooms.FindAsync(id);
 
-            //if the room exists, delete it
-            if(room != null)
+            //if the room exists and is not in used, delete it
+            if(room != null && !room.isInUse)
             {
                 _context.Remove(room);
             }
