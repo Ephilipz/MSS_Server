@@ -23,6 +23,8 @@ using DataService.Reservation;
 using DataAccess.Reservation;
 using DataAccess.Profile;
 using DataService.Profile;
+using DataService.Complaint;
+using DataAccess.Complaint;
 
 namespace MeetingManagementSystem
 {
@@ -103,6 +105,8 @@ namespace MeetingManagementSystem
             services.AddScoped<IReservationDataService, ReservationDataService>();
             services.AddScoped<IProfileDataAccess, ProfileDataAccess>();
             services.AddScoped<IProfileDataService, ProfileDataService>();
+            services.AddScoped<IComplaintDataAccess, ComplaintDataAccess>();
+            services.AddScoped<IComplaintDataService, ComplaintDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
