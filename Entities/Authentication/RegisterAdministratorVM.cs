@@ -24,7 +24,7 @@ namespace Entities.Authentication
 
         [Required(ErrorMessage = "AdminID is required")]
         //RegEx: Id number must have 9 digits
-        [RegularExpression(@"(0-9){9}", ErrorMessage = "Invalid ID")]
+        [RegularExpression(@"[0-9]{9}", ErrorMessage = "Invalid ID")]
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Phone Number is required")]
