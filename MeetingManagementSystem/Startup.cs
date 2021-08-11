@@ -76,7 +76,8 @@ namespace MeetingManagementSystem
                 options.Password.RequireNonAlphanumeric = false;
                 options.User.RequireUniqueEmail = true;
             })
-              .AddEntityFrameworkStores<ApplicationContext>();
+              .AddEntityFrameworkStores<ApplicationContext>()
+              .AddDefaultTokenProviders();
 
             //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
             services.AddDbContext<ApplicationContext>(
@@ -119,6 +120,8 @@ namespace MeetingManagementSystem
             app.UseCors(AllowCORS);
 
             //used for login / registration
+            app.UseAuthorization();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

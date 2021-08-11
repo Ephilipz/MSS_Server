@@ -12,6 +12,6 @@ namespace Entities.Users
         public int ClientId { get; set; }
         public string FullName { get; set; }
         public string CardNumber { get; set; }
-        public DateTime Expiry { get; set; }
+        public string Expiry { get; set; }
     }
 }
