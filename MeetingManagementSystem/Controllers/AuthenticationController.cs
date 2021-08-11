@@ -4,11 +4,13 @@ using Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
@@ -42,7 +44,6 @@ namespace MeetingManagementSystem.Controllers
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
                 Email = registerVM.Email,
-                AdminId = registerVM.AdminId
             };
 
             //create a user using the built in usermanager class
@@ -58,7 +59,14 @@ namespace MeetingManagementSystem.Controllers
             //otherwise, sign in the new user
             await _signInManager.SignInAsync(user, true);
 
-            return Ok();
+            List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
+                };
+
+            string jwt = generateJWT(claims);
+            return Ok(jwt);
         }
 
         [HttpPost("RegisterClient")]
@@ -71,10 +79,10 @@ namespace MeetingManagementSystem.Controllers
             }
 
             //initializes a new client object
-            var user = new IdentityUser
+            var user = new Client
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
-                Email = registerVM.Email
+                Email = registerVM.Email,
             };
 
             //create a user using the built in usermanager class
@@ -90,7 +98,14 @@ namespace MeetingManagementSystem.Controllers
             //otherwise, sign in the new user
             await _signInManager.SignInAsync(user, true);
 
-            return Ok();
+            List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
+                };
+
+            string jwt = generateJWT(claims);
+            return Ok(jwt);
         }
 
         [HttpPost("Login")]
@@ -105,18 +120,33 @@ namespace MeetingManagementSystem.Controllers
             //get the user object using their email via the userManager class
             var user = await _userManager.FindByEmailAsync(loginVM.Email);
 
-            //if the user exists and the password matches, sign in the user
+            //if the user exists and the password matches, sign in the user and reset the fail counter
             if (user != null &&
                 await _userManager.CheckPasswordAsync(user, loginVM.Password))
             {
                 await _signInManager.SignInAsync(user, false);
-                return Ok();
+                user.AccessFailedCount = 0;
+
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
+                };
+
+                string jwt = generateJWT(claims);
+                await _userManager.UpdateAsync(user);
+                return Ok(jwt);
             }
 
             //otherwise, add an error to the response and return a Bad Request
+            //if the access fail counter exceeds 5 times, redirect to error 404 page
             else
             {
+                if (user.AccessFailedCount > 5)
+                    Response.Redirect("Error 404");
                 ModelState.AddModelError("", "Invalid UserName or Password");
+                user.AccessFailedCount++;
+                await _userManager.UpdateAsync(user);
                 return BadRequest(ModelState);
             }
         }
@@ -125,6 +155,33 @@ namespace MeetingManagementSystem.Controllers
         public async Task Logout()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IActionResult> IsAdmin()
+        {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            IdentityUser user = await _userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                return Ok(((Administrator)user).AdminId != 0);
+            }
+
+            return BadRequest();
+        }
+        private string generateJWT(List<Claim> claims)
+        {
+            byte[] JWTsecret = Encoding.UTF8.GetBytes(_IConfiguration["JWT:Secret"]);
+            SymmetricSecurityKey authSigningKey = new SymmetricSecurityKey(JWTsecret);
+
+            JwtSecurityToken token = new JwtSecurityToken(
+                    issuer: _IConfiguration["JWT:Issuer"],
+                    audience: _IConfiguration["JWT:Audience"],
+                    expires: DateTime.Now.AddHours(3),
+                    claims: claims,
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                    );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

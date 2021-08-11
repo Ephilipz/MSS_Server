@@ -22,6 +22,7 @@ namespace DataAccess
             builder.Entity<LogItem>().ToTable("Logging");
             builder.Entity<Room>().ToTable("Room");
             builder.Entity<Entities.Reservation>().ToTable("Reservation");
+            builder.Entity<Entities.Complaints.Complaint>().ToTable("Complaint");
             base.OnModelCreating(builder);
         }
 
@@ -32,5 +33,6 @@ namespace DataAccess
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Entities.Reservation> Reservations { get; set; }
+        public DbSet<Entities.Complaints.Complaint> Complaints { get; set; }
     }
 }

@@ -21,6 +21,13 @@ using System.Threading.Tasks;
 using DataService;
 using DataService.Reservation;
 using DataAccess.Reservation;
+using DataAccess.Profile;
+using DataService.Profile;
+using DataService.Complaint;
+using DataAccess.Complaint;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MeetingManagementSystem
 {
@@ -70,17 +77,36 @@ namespace MeetingManagementSystem
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
-                options.Password.RequireDigit = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
                 options.User.RequireUniqueEmail = true;
             })
               .AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
 
-            //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
-            services.AddDbContext<ApplicationContext>(
+            services
+                .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["JWT:Issuer"],
+                        ValidAudience = Configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"])),
+                    };
+                });
+
+                    //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
+                    services.AddDbContext<ApplicationContext>(
             dbContextOptions => dbContextOptions
                 .UseMySql(Configuration.GetConnectionString("DefaultConnection"),
                         new MySqlServerVersion(new Version(8, 0, 20)))
@@ -100,6 +126,10 @@ namespace MeetingManagementSystem
             services.AddScoped<IRoomDataAccess, RoomDataAccess>();
             services.AddScoped<IReservationDataAccess, ReservationDataAccess>();
             services.AddScoped<IReservationDataService, ReservationDataService>();
+            services.AddScoped<IProfileDataAccess, ProfileDataAccess>();
+            services.AddScoped<IProfileDataService, ProfileDataService>();
+            services.AddScoped<IComplaintDataAccess, ComplaintDataAccess>();
+            services.AddScoped<IComplaintDataService, ComplaintDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,7 +150,7 @@ namespace MeetingManagementSystem
             app.UseCors(AllowCORS);
 
             //used for login / registration
-            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

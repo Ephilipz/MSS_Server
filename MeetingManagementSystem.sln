@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataService", "DataService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FCF5D14-803F-408F-8383-753CA1D56AA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{CD738F76-D900-45D4-AA79-637550FE5BB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enums", "Enums\Enums.csproj", "{CD738F76-D900-45D4-AA79-637550FE5BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{BFAE8A1D-D4F3-4D65-BA29-A2964B1BD3F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD738F76-D900-45D4-AA79-637550FE5BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFAE8A1D-D4F3-4D65-BA29-A2964B1BD3F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFAE8A1D-D4F3-4D65-BA29-A2964B1BD3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFAE8A1D-D4F3-4D65-BA29-A2964B1BD3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFAE8A1D-D4F3-4D65-BA29-A2964B1BD3F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
