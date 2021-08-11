@@ -42,8 +42,6 @@ namespace MeetingManagementSystem.Controllers
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
                 Email = registerVM.Email,
-                Id = registerVM.Id,
-                PhoneNumber = registerVM.PhoneNumber
             };
 
             //create a user using the built in usermanager class
@@ -76,8 +74,6 @@ namespace MeetingManagementSystem.Controllers
             {
                 UserName = registerVM.FullName.Trim().Replace(" ", "."),
                 Email = registerVM.Email,
-                Id = registerVM.Id, 
-                PhoneNumber = registerVM.PhoneNumber
             };
 
             //create a user using the built in usermanager class
