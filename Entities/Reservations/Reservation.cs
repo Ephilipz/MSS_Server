@@ -26,7 +26,6 @@ namespace Entities
         [DataType(DataType.DateTime)]
         public DateTime EndDateTime { get; set; }
 
-        public bool isPayed { get; set; }
         public List<IdentityUser> Participants { get; set; }
     }
 }

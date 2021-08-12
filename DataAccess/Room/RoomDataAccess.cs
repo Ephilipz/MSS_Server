@@ -22,13 +22,20 @@ namespace DataAccess
             //get the room from the database
             Room room = await _context.Rooms.FindAsync(id);
 
-            //if the room exists and is not in used, delete it
-            if(room != null && !room.isInUse)
+            bool isInUse = _context.Reservations.Any(reservation => reservation.Room.Id == id && reservation.EndDateTime.CompareTo(DateTime.UtcNow) < 0);
+
+            if (isInUse)
             {
-                _context.Remove(room);
+                throw new InvalidOperationException("Room is in use");
             }
 
-            //save changes
+            if (room == null)
+            {
+                throw new KeyNotFoundException("Room Not Found. It may have been deleted");
+            }
+
+            _context.Remove(room);
+
             await _context.SaveChangesAsync();
 
             return room;

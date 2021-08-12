@@ -19,6 +19,7 @@ namespace DataAccess
         //This function is used to map the classes to mySQL tables
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //builder.HasCharSet(null, DelegationModes.ApplyToDatabases);
             builder.Entity<LogItem>().ToTable("Logging");
             builder.Entity<Room>().ToTable("Room");
             builder.Entity<Entities.Reservation>().ToTable("Reservation");

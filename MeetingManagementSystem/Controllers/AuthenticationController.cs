@@ -66,7 +66,7 @@ namespace MeetingManagementSystem.Controllers
                 };
 
             string jwt = generateJWT(claims);
-            return Ok(jwt);
+            return Ok(new { token = jwt });
         }
 
         [HttpPost("RegisterClient")]
@@ -91,7 +91,7 @@ namespace MeetingManagementSystem.Controllers
             //if the user was not created, return a bad request with the error code and details
             if (!result.Succeeded)
             {
-                ModelState.TryAddModelError(result.Errors.First().Code, result.Errors.First().Description);
+                ModelState.TryAddModelError("modelError", result.Errors.First().Description);
                 return BadRequest(ModelState);
             }
 
@@ -105,7 +105,7 @@ namespace MeetingManagementSystem.Controllers
                 };
 
             string jwt = generateJWT(claims);
-            return Ok(jwt);
+            return Ok(new { token = jwt });
         }
 
         [HttpPost("Login")]
@@ -135,7 +135,7 @@ namespace MeetingManagementSystem.Controllers
 
                 string jwt = generateJWT(claims);
                 await _userManager.UpdateAsync(user);
-                return Ok(jwt);
+                return Ok(new { token = jwt });
             }
 
             //otherwise, add an error to the response and return a Bad Request
@@ -157,6 +157,7 @@ namespace MeetingManagementSystem.Controllers
             await _signInManager.SignOutAsync();
         }
 
+        [HttpGet("IsAdmin")]
         public async Task<IActionResult> IsAdmin()
         {
             string userId = Helper.AccountHelper.getUserId(HttpContext, User);

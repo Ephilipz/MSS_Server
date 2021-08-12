@@ -11,9 +11,7 @@ namespace Entities
     public class Room
     {
         public int Id { get; set; }
-        public bool isInUse { get; set; }
-
         [Required(ErrorMessage = "Room type is required")]
-        public bool isSpecial { get; set; }
+        public bool IsSpecial { get; set; }
     }
 }

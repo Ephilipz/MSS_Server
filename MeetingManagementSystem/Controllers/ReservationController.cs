@@ -44,10 +44,15 @@ namespace MeetingManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
-            Reservation updatedReservation = await _IReservationDataService.PostReservation(reservation);
-            if (updatedReservation == null)
+            Reservation updatedReservation;
+            try
             {
-                return BadRequest("Unable To Update Reservation");
+                updatedReservation = await _IReservationDataService.PostReservation(reservation);
+            }
+            catch (Exception e)
+            {
+                ModelState.TryAddModelError("ModelError", e.Message);
+                return BadRequest(ModelState);
             }
             return updatedReservation;
         }
@@ -55,10 +60,15 @@ namespace MeetingManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Reservation>> DeleteReservation(int id)
         {
-            Reservation deletedReservation = await _IReservationDataService.DeleteReservation(id);
-            if (deletedReservation == null)
+            Reservation deletedReservation;
+            try
             {
-                return BadRequest("Unable To Delete Reservation");
+                deletedReservation = await _IReservationDataService.DeleteReservation(id);
+            }
+            catch(Exception e)
+            {
+                ModelState.TryAddModelError("ModelError", e.Message);
+                return BadRequest(ModelState);
             }
             return deletedReservation;
         }

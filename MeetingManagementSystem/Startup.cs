@@ -15,9 +15,6 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DataService;
 using DataService.Reservation;
 using DataAccess.Reservation;
@@ -105,14 +102,14 @@ namespace MeetingManagementSystem
                     };
                 });
 
-                    //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
-                    services.AddDbContext<ApplicationContext>(
-            dbContextOptions => dbContextOptions
-                .UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                        new MySqlServerVersion(new Version(8, 0, 20)))
-                .EnableSensitiveDataLogging() // <-- These two calls are optional but help
-                .EnableDetailedErrors()       // <-- with debugging (remove for production).
-        );
+            //Adds Application context as the DB context which configures the database using the DefualtConnection key in the appsettings.json
+            services.AddDbContext<ApplicationContext>(
+                dbContextOptions => dbContextOptions.UseMySql(
+                    Configuration.GetConnectionString("DefaultConnection"),
+                        new MySqlServerVersion(new Version(8, 0, 25)))
+                    // Everything from this point on is optional but helps with debugging.
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors());
 
 
         }
