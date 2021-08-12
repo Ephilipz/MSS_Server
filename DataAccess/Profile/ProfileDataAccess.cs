@@ -49,7 +49,8 @@ namespace DataAccess.Profile
 
         public async Task<IdentityUser> PostProfile(IdentityUser user)
         {
-            await _context.Users.AddAsync(user);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
             return user;
         }
 
