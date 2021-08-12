@@ -21,7 +21,7 @@ namespace Entities.Users
         [RegularExpression(@"[0-9]{3}", ErrorMessage = "Invalid CVC")]
         public string CVC { get; set; }
         [Required]
-        [RegularExpression(@"((0[0-9])|(1[0-2]))\/([0-9]{2}))", ErrorMessage = "Invalid Expiry Date")]
+        [RegularExpression(@"((0[0-9])|(1[0-2]))\/([0-9]{2})", ErrorMessage = "Invalid Expiry Date")]
         public string Expiry { get; set; }
     }
 }
