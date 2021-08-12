@@ -15,11 +15,14 @@ namespace MeetingManagementSystem.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private IProfileDataService _IProfileDataService;
 
-        public ProfileController(IProfileDataService iProfileDataService)
+        public ProfileController(UserManager<IdentityUser> userManager, IProfileDataService iProfileDataService,
+            IUserClaimsPrincipalFactory<IdentityUser> claimsFactory)
         {
             _IProfileDataService = iProfileDataService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -37,15 +40,21 @@ namespace MeetingManagementSystem.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<IdentityUser>> PutProfile(IdentityUser user)
+        public async Task<ActionResult<IdentityUser>> PutProfile(Client user)
         {
-            return await _IProfileDataService.PutProfile(user);
+            IdentityUser search = await _userManager.FindByEmailAsync(user.Email);
+            search.UserName= user.UserName;
+            //search.BillingInformation = user.BillingInformation;
+            return await _IProfileDataService.PutProfile(search);
         }
 
         [HttpPost]
-        public async Task<ActionResult<IdentityUser>> PostProfile(IdentityUser user)
+        public async Task<ActionResult<IdentityUser>> PostProfile(Client user)
         {
-            IdentityUser updatedProfile = await _IProfileDataService.PostProfile(user);
+            Client search = (Client)await _userManager.FindByEmailAsync(user.Email);
+            search.UserName = user.UserName;
+            search.BillingInformation = user.BillingInformation;
+            IdentityUser updatedProfile = await _IProfileDataService.PostProfile(search);
             if (updatedProfile == null)
             {
                 return BadRequest("Unable To Update Profile");

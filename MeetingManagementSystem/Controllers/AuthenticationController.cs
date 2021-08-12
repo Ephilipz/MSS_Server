@@ -163,13 +163,9 @@ namespace MeetingManagementSystem.Controllers
             string userId = Helper.AccountHelper.getUserId(HttpContext, User);
             IdentityUser user = await _userManager.FindByIdAsync(userId);
 
-            if (user != null)
-            {
-                return Ok(((Administrator)user).AdminId != 0);
-            }
+        //    return BadRequest();
+        //}
 
-            return BadRequest();
-        }
         private string generateJWT(List<Claim> claims)
         {
             byte[] JWTsecret = Encoding.UTF8.GetBytes(_IConfiguration["JWT:Secret"]);
