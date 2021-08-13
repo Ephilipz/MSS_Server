@@ -163,8 +163,8 @@ namespace MeetingManagementSystem.Controllers
             string userId = Helper.AccountHelper.getUserId(HttpContext, User);
             IdentityUser user = await _userManager.FindByIdAsync(userId);
 
-        //    return BadRequest();
-        //}
+            return BadRequest();
+        }
 
         private string generateJWT(List<Claim> claims)
         {
