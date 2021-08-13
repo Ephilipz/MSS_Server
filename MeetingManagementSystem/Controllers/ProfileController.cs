@@ -2,6 +2,7 @@
 using DataService.Profile;
 using Entities;
 using Entities.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
 {
-    [Route("api/Profile")]
+    [Route("api/Profile"), Authorize]
     [ApiController]
     public class ProfileController : ControllerBase
     {
@@ -33,7 +34,7 @@ namespace MeetingManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<IdentityUser>> GetProfile(int id)
+        public async Task<ActionResult<IdentityUser>> GetProfile(string id)
         {
             IdentityUser user = await _IProfileDataService.GetProfile(id);
             return user;
@@ -43,7 +44,7 @@ namespace MeetingManagementSystem.Controllers
         public async Task<ActionResult<IdentityUser>> PutProfile(Client user)
         {
             IdentityUser search = await _userManager.FindByEmailAsync(user.Email);
-            search.UserName= user.UserName;
+            search.UserName = user.UserName;
             //search.BillingInformation = user.BillingInformation;
             return await _IProfileDataService.PutProfile(search);
         }
@@ -71,6 +72,28 @@ namespace MeetingManagementSystem.Controllers
                 return BadRequest("Unable To Delete Profile");
             }
             return deletedUser;
+        }
+
+        [HttpGet("GetCurrentUserWithBilling")]
+        public async Task<ActionResult<IdentityUser>> GetCurrentUserWithBilling()
+        {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            return await _IProfileDataService.GetProfileWithBilling(userId);
+        }
+
+        [HttpGet("GetCurrentUser")]
+        public async Task<ActionResult<IdentityUser>> GetCurrentUser()
+        {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            return await _IProfileDataService.GetProfile(userId);
+        }
+
+        [HttpGet("IsAdmin")]
+        public async Task<ActionResult<bool>> IsAdmin()
+        {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            bool admin = await _IProfileDataService.IsAdmin(userId);
+            return Ok(new { isAdmin = admin });
         }
     }
 }

@@ -35,18 +35,26 @@ namespace DataAccess.Reservation
         public async Task<Entities.Reservation> GetReservation(int id)
         {
             //get the reservation from database
-            Entities.Reservation reservation = await _context.Reservations.FindAsync(id);
+            Entities.Reservation reservation = await _context.Reservations.Where(reservation => reservation.Id == id)
+                .Include(reservation => reservation.Room)
+                .Include(reservation => reservation.User)
+                .FirstAsync();
             return reservation;
         }
 
         public async Task<List<Entities.Reservation>> GetReservations()
         {
             //get the all reservations from database
-            return await _context.Reservations.ToListAsync();
+            return await _context.Reservations.Include(reservation => reservation.Room).ToListAsync();
         }
 
         public async Task<Entities.Reservation> PostReservation(Entities.Reservation reservation)
         {
+            bool existingReservationInTimeRange = await _context.Reservations
+                .Where(res => res.Room == reservation.Room)
+                .AnyAsync(res => Math.Abs((res.StartDateTime - reservation.StartDateTime).TotalMinutes) < 60);
+            if (existingReservationInTimeRange)
+                throw new InvalidOperationException("A reservation has been made on this room during this period");
             await _context.Reservations.AddAsync(reservation);
             return reservation;
         }

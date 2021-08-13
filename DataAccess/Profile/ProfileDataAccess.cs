@@ -34,11 +34,17 @@ namespace DataAccess.Profile
             return user;
         }
 
-        public async Task<IdentityUser> GetProfile(int id)
+        public async Task<IdentityUser> GetProfile(string id)
         {
             //get the user from database
-            IdentityUser user = await _context.Users.FindAsync(id);
+            IdentityUser user = await _context.Users.FirstAsync(profile => profile.Id == id);
             return user;
+        }
+
+        public async Task<Client> GetProfileWithBilling(string id)
+        {
+            return await _context.Clients.Where(client => client.Id == id)
+                .Include(client => client.BillingInformation).FirstOrDefaultAsync();
         }
 
         public async Task<List<IdentityUser>> GetProfiles()
@@ -56,9 +62,14 @@ namespace DataAccess.Profile
 
         public async Task<IdentityUser> PutProfile(IdentityUser user)
         {
-            _context.Update(user);
+            _context.Add(user);
             await _context.SaveChangesAsync();
             return user;
+        }
+
+        public async Task<bool> IsAdmin(string userId)
+        {
+            return await _context.Administrators.AnyAsync(admin => admin.Id == userId);
         }
     }
 }

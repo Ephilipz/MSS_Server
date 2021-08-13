@@ -21,5 +21,8 @@ namespace Entities.Authentication
         [Required(ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required, StringLength(4)]
+        public string AdminId { get; set; }
     }
 }

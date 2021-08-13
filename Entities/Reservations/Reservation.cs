@@ -26,6 +26,6 @@ namespace Entities
         [DataType(DataType.DateTime)]
         public DateTime EndDateTime { get; set; }
 
-        public List<IdentityUser> Participants { get; set; }
+        public string Participants { get; set; }
     }
 }

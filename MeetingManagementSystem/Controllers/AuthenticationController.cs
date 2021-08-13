@@ -125,7 +125,6 @@ namespace MeetingManagementSystem.Controllers
                 await _userManager.CheckPasswordAsync(user, loginVM.Password))
             {
                 await _signInManager.SignInAsync(user, false);
-                user.AccessFailedCount = 0;
 
                 List<Claim> claims = new List<Claim>
                 {
@@ -142,10 +141,7 @@ namespace MeetingManagementSystem.Controllers
             //if the access fail counter exceeds 5 times, redirect to error 404 page
             else
             {
-                if (user.AccessFailedCount > 5)
-                    Response.Redirect("Error 404");
                 ModelState.AddModelError("", "Invalid UserName or Password");
-                user.AccessFailedCount++;
                 await _userManager.UpdateAsync(user);
                 return BadRequest(ModelState);
             }
@@ -156,15 +152,6 @@ namespace MeetingManagementSystem.Controllers
         {
             await _signInManager.SignOutAsync();
         }
-
-        [HttpGet("IsAdmin")]
-        public async Task<IActionResult> IsAdmin()
-        {
-            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
-            IdentityUser user = await _userManager.FindByIdAsync(userId);
-
-        //    return BadRequest();
-        //}
 
         private string generateJWT(List<Claim> claims)
         {

@@ -2,6 +2,7 @@
 using DataService.Reservation;
 using Entities;
 using Entities.Users;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ namespace MeetingManagementSystem.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        private IReservationDataService _IReservationDataService;
+        private readonly IReservationDataService _IReservationDataService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ReservationController(IReservationDataService iReservationDataService)
+        public ReservationController(IReservationDataService iReservationDataService, UserManager<IdentityUser> userManager)
         {
             _IReservationDataService = iReservationDataService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -38,12 +41,21 @@ namespace MeetingManagementSystem.Controllers
         [HttpPut]
         public async Task<ActionResult<Reservation>> PutReservation(Reservation reservation)
         {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            IdentityUser user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return Unauthorized();
+            reservation.User = user;
             return await _IReservationDataService.PutReservation(reservation);
         }
 
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            IdentityUser user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return Unauthorized();
             Reservation updatedReservation;
             try
             {
@@ -65,7 +77,7 @@ namespace MeetingManagementSystem.Controllers
             {
                 deletedReservation = await _IReservationDataService.DeleteReservation(id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ModelState.TryAddModelError("ModelError", e.Message);
                 return BadRequest(ModelState);

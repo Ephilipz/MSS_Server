@@ -21,9 +21,14 @@ namespace DataService.Profile
             return await _IProfileDataAccess.DeleteProfile(id);
         }
 
-        public async Task<IdentityUser> GetProfile(int id)
+        public async Task<IdentityUser> GetProfile(string id)
         {
             return await _IProfileDataAccess.GetProfile(id);
+        }
+
+        public async Task<Client> GetProfileWithBilling(string id)
+        {
+            return await _IProfileDataAccess.GetProfileWithBilling(id);
         }
 
         public async Task<List<IdentityUser>> GetProfiles()
@@ -33,12 +38,18 @@ namespace DataService.Profile
 
         public async Task<IdentityUser> PostProfile(IdentityUser user)
         {
+            user.UserName = user.UserName.Trim().Replace(" ", ".");
             return await _IProfileDataAccess.PostProfile(user);
         }
 
         public async Task<IdentityUser> PutProfile(IdentityUser user)
         {
             return await _IProfileDataAccess.PutProfile(user);
+        }
+
+        public async Task<bool> IsAdmin(string userId)
+        {
+            return await _IProfileDataAccess.IsAdmin(userId);
         }
     }
 }

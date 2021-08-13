@@ -14,7 +14,9 @@ namespace DataAccess.Profile
         Task<IdentityUser> PostProfile(IdentityUser user);
         Task<IdentityUser> PutProfile(IdentityUser user);
         Task<IdentityUser> DeleteProfile(int id);
-        Task<IdentityUser> GetProfile(int id);
+        Task<IdentityUser> GetProfile(string id);
+        Task<Client> GetProfileWithBilling(string id);
         Task<List<IdentityUser>> GetProfiles();
+        Task<bool> IsAdmin(string id);
     }
 }
