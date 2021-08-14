@@ -61,6 +61,7 @@ namespace DataAccess.Reservation
             if (existingReservationInTimeRange)
                 throw new InvalidOperationException("A reservation has been made on this room during this period");
             await _context.Reservations.AddAsync(reservation);
+            await _context.SaveChangesAsync();
             return reservation;
         }
 
