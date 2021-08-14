@@ -60,6 +60,7 @@ namespace DataAccess.Reservation
                 .AnyAsync(res => res.StartDateTime == reservation.StartDateTime);
             if (existingReservationInTimeRange)
                 throw new InvalidOperationException("A reservation has been made on this room during this period");
+            _context.Entry(reservation.Room).State = EntityState.Unchanged;
             await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
             return reservation;
