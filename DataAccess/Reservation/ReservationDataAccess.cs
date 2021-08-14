@@ -35,7 +35,7 @@ namespace DataAccess.Reservation
         public async Task<Entities.Reservation> GetReservation(int id)
         {
             //get the reservation from database
-            Entities.Reservation reservation = await _context.Reservations.Where(reservation => reservation.Id == id)
+            Entities.Reservation reservation = await _context.Reservations.AsNoTracking().Where(reservation => reservation.Id == id)
                 .Include(reservation => reservation.Room)
                 .Include(reservation => reservation.User)
                 .FirstAsync();
@@ -45,7 +45,12 @@ namespace DataAccess.Reservation
         public async Task<List<Entities.Reservation>> GetReservations()
         {
             //get the all reservations from database
-            return await _context.Reservations.Include(reservation => reservation.Room).ToListAsync();
+            return await _context.Reservations.AsNoTracking().Include(reservation => reservation.Room).ToListAsync();
+        }
+
+        public async Task<List<Entities.Reservation>> GetReservationsForUser(string userId)
+        {
+            return await _context.Reservations.AsNoTracking().Where(reservation => reservation.User.Id == userId).Include(reservation => reservation.Room).AsSplitQuery().ToListAsync();
         }
 
         public async Task<Entities.Reservation> PostReservation(Entities.Reservation reservation)

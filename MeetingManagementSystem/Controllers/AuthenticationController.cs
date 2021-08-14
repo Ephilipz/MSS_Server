@@ -52,7 +52,7 @@ namespace MeetingManagementSystem.Controllers
             //if the user was not created, return a bad request with the error code and details
             if (!result.Succeeded)
             {
-                ModelState.TryAddModelError(result.Errors.First().Code, result.Errors.First().Description);
+                ModelState.TryAddModelError("modelError", result.Errors.First().Description);
                 return BadRequest(ModelState);
             }
 

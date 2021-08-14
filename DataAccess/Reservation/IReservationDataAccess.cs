@@ -13,6 +13,7 @@ namespace DataAccess
     {
         Task<Entities.Reservation> PostReservation(Entities.Reservation reservation);
         Task<Entities.Reservation> PutReservation(Entities.Reservation reservation);
+        Task<List<Entities.Reservation>> GetReservationsForUser(string userId);
         Task<Entities.Reservation> DeleteReservation(int id);
         Task<Entities.Reservation> GetReservation(int id);
         Task<List<Entities.Reservation>> GetReservations();

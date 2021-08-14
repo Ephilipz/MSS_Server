@@ -22,7 +22,7 @@ namespace DataAccess
             //get the room from the database
             Room room = await _context.Rooms.FindAsync(id);
 
-            bool isInUse = _context.Reservations.Any(reservation => reservation.Room.Id == id && reservation.EndDateTime.CompareTo(DateTime.UtcNow) < 0);
+            bool isInUse = _context.Reservations.Any(reservation => reservation.Room.Id == id);
 
             if (isInUse)
             {
@@ -53,8 +53,9 @@ namespace DataAccess
 
         public async Task<Room> PostRoom(Room room)
         {
-            await _context.Rooms.AddAsync(room);
-            return room;
+            var roomInserted = await _context.AddAsync(room);
+            await _context.SaveChangesAsync();
+            return roomInserted.Entity;
         }
 
         public async Task<Room> PutRoom(Room room)

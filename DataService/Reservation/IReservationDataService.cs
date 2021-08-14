@@ -14,5 +14,6 @@ namespace DataService.Reservation
         Task<Entities.Reservation> DeleteReservation(int id);
         Task<Entities.Reservation> GetReservation(int id);
         Task<List<Entities.Reservation>> GetReservations();
+        Task<List<Entities.Reservation>> GetReservationsForUser(string userId);
     }
 }

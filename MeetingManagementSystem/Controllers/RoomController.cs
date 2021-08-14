@@ -53,12 +53,20 @@ namespace MeetingManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(int id)
         {
-            Room deletedRoom = await _IRoomDataService.DeleteRoom(id);
-            if (deletedRoom == null)
+            try
             {
-                return BadRequest("Unable To Delete Room");
+                Room deletedRoom = await _IRoomDataService.DeleteRoom(id);
+                if (deletedRoom == null)
+                {
+                    return BadRequest("Unable To Delete Room");
+                }
+                return deletedRoom;
             }
-            return deletedRoom;
+            catch (Exception e)
+            {
+                ModelState.TryAddModelError("ModelError", e.Message);
+                return BadRequest(ModelState);
+            }
         }
     }
 }

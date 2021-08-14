@@ -40,5 +40,10 @@ namespace DataService.Reservation
         {
             return await _IReservationDataAccess.PutReservation(reservation);
         }
+
+        public async Task<List<Entities.Reservation>> GetReservationsForUser(string userId)
+        {
+            return await _IReservationDataAccess.GetReservationsForUser(userId);
+        }
     }
 }

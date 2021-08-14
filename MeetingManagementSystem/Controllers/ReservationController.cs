@@ -2,6 +2,7 @@
 using DataService.Reservation;
 using Entities;
 using Entities.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
 {
+    [Authorize]
     [Route("api/Reservation")]
     [ApiController]
     public class ReservationController : ControllerBase
@@ -30,6 +32,18 @@ namespace MeetingManagementSystem.Controllers
             List<Reservation> reservations = await _IReservationDataService.GetReservations();
             return reservations;
         }
+
+        [HttpGet("GetReservationsForUser")]
+        public async Task<ActionResult<List<Reservation>>> GetReservationsForUser()
+        {
+            string userId = Helper.AccountHelper.getUserId(HttpContext, User);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return BadRequest();
+            }
+            return await _IReservationDataService.GetReservationsForUser(userId);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservation>> GetReservation(int id)
