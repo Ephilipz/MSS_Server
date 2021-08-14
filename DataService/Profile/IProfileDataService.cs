@@ -15,7 +15,7 @@ namespace DataService.Profile
         Task<IdentityUser> DeleteProfile(int id);
         Task<IdentityUser> GetProfile(string id);
         Task<Client> GetProfileWithBilling(string id);
-        Task<List<IdentityUser>> GetProfiles();
+        Task<List<Client>> GetProfiles();
         Task<bool> IsAdmin(string userId);
     }
 }

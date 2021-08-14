@@ -27,9 +27,9 @@ namespace MeetingManagementSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<IdentityUser>>> GetProfiles()
+        public async Task<ActionResult<List<Client>>> GetProfiles()
         {
-            List<IdentityUser> profiles = await _IProfileDataService.GetProfiles();
+            List<Client> profiles = await _IProfileDataService.GetProfiles();
             return profiles;
         }
 
@@ -75,7 +75,7 @@ namespace MeetingManagementSystem.Controllers
         }
 
         [HttpGet("GetCurrentUserWithBilling")]
-        public async Task<ActionResult<IdentityUser>> GetCurrentUserWithBilling()
+        public async Task<ActionResult<Client>> GetCurrentUserWithBilling()
         {
             string userId = Helper.AccountHelper.getUserId(HttpContext, User);
             return await _IProfileDataService.GetProfileWithBilling(userId);

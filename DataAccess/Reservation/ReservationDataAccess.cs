@@ -57,7 +57,7 @@ namespace DataAccess.Reservation
         {
             bool existingReservationInTimeRange = await _context.Reservations
                 .Where(res => res.Room == reservation.Room)
-                .AnyAsync(res => Math.Abs((res.StartDateTime - reservation.StartDateTime).TotalMinutes) < 60);
+                .AnyAsync(res => res.StartDateTime == reservation.StartDateTime);
             if (existingReservationInTimeRange)
                 throw new InvalidOperationException("A reservation has been made on this room during this period");
             await _context.Reservations.AddAsync(reservation);

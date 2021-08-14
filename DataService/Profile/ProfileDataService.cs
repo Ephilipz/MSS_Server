@@ -31,7 +31,7 @@ namespace DataService.Profile
             return await _IProfileDataAccess.GetProfileWithBilling(id);
         }
 
-        public async Task<List<IdentityUser>> GetProfiles()
+        public async Task<List<Client>> GetProfiles()
         {
             return await _IProfileDataAccess.GetProfiles();
         }

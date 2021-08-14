@@ -47,10 +47,10 @@ namespace DataAccess.Profile
                 .Include(client => client.BillingInformation).FirstOrDefaultAsync();
         }
 
-        public async Task<List<IdentityUser>> GetProfiles()
+        public async Task<List<Client>> GetProfiles()
         {
             //get the all users from database
-            return await _context.Users.ToListAsync();
+            return await _context.Clients.ToListAsync();
         }
 
         public async Task<IdentityUser> PostProfile(IdentityUser user)

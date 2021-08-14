@@ -73,6 +73,7 @@ namespace MeetingManagementSystem.Controllers
             Reservation updatedReservation;
             try
             {
+                reservation.User = user;
                 updatedReservation = await _IReservationDataService.PostReservation(reservation);
             }
             catch (Exception e)
