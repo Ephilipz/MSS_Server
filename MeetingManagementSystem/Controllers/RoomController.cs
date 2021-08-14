@@ -1,5 +1,6 @@
 ﻿using DataService;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MeetingManagementSystem.Controllers
 {
+    [Authorize]
     [Route("api/Room")]
     [ApiController]
     public class RoomController : ControllerBase
